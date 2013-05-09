@@ -11,6 +11,3 @@ my solutions to project euler problems
 
 **7.c**
 - used sieve of eratosthenes after looking it up. much more refined prime generation than what I use in 3.c
-
-**8.c**
-- my solution to this is horrific, I should go back and fix it but I don't really enjoy thinking about it so meh

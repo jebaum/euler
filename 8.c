@@ -2,21 +2,14 @@
  */
 
 #include <stdio.h>
-
-int atoi(char s[])
-{
-  int i,n;
-  n=0;
-  for (i=0; s[i]>='0' && s[i]<='9'; ++i)
-    n = 10*n + (s[i] - '0');
-  return n;
-}
+#define DIGITS 1000
+#define SUBSEQUENCE_SIZE 5
 
 int main()
 {
   int i,j,product,largest=0;
 
-  char numString[1000] =
+  char numString[DIGITS] =
     "73167176531330624919225119674426574742355349194934"
     "96983520312774506326239578318016984801869478851843"
     "85861560789112949495459501737958331952853208805511"
@@ -37,16 +30,15 @@ int main()
     "84580156166097919133875499200524063689912560717606"
     "05886116467109405077541002256983155200055935729725"
     "71636269561882670428252483600823257530420752963450";
-  int digit[5];
 
-  for (i=0; i<1000; ++i)
+  for (i=0; i<=DIGITS-SUBSEQUENCE_SIZE; ++i)
   {
-    for (j=i; j<i+5 && j<1000; ++j)
+    product = 1;
+    for (j=0; j<SUBSEQUENCE_SIZE; ++j)
     {
-      digit[j-i] = numString[j] - '0';
+      product *= numString[i+j] - '0';
     }
-    product = digit[0] * digit[1] * digit[2] * digit[3] * digit[4]; // this produces the right answer for this specific problem, but doesn't work in general
-    largest = (product > largest ? product : largest);              // I don't really enjoy thinking about this though so I'll move on for now
+    largest = (product > largest ? product : largest);
   }
   printf("largest product is %d\n", largest);
 }
