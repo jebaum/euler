@@ -9,17 +9,14 @@
 
 int isPalindrome(int x)
 {
-  int number = x, dig=0, reverse = 0;
+  int original_number = x, digit=0, reverse=0;
   while (x>0)
   {
-    dig = x % 10;
-    reverse = reverse * 10 + dig;
+    digit   = x % 10;
+    reverse = reverse * 10 + digit;
     x = x / 10;
   }
-  if (number == reverse)
-    return 1;
-  else
-    return 0;
+  return (original_number == reverse ? 1 : 0);
 }
 
 int main()
@@ -28,14 +25,15 @@ int main()
 
   for (i=999; i>=100; --i)
   {
+    if (i*999 <= answer) // terminate if we can't find any bigger numbers
+      break;
+
     for (j=999; j>=100; --j)
-    {
-      if ( isPalindrome(i*j) && i*j > answer )
+      if (isPalindrome(i*j) && i*j > answer)
       {
         answer = i*j;
         break;
       }
-    }
   }
   printf("largest palindrome is %d\n", answer);
 }
