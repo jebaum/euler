@@ -12,7 +12,7 @@ int main()
 {
   char primes[(UPPER_LIMIT-1)/2];
   int i,j;
-  double sum = 2;
+  unsigned long long sum = 2;
 
   for (i=1; i<(UPPER_LIMIT-1)/2; ++i) // initialize sieve
     primes[i] = 'p';
@@ -31,8 +31,8 @@ int main()
   for (i=1; i<(UPPER_LIMIT-1)/2; ++i)
   {
     if (primes[i] == 'p')
-      sum+=(double)(2*i+1); // I couldn't get unsigned long long ints to work, and floats weren't precise enough
+      sum+=(2*i+1);
   }
-  printf("sum is %f\n", sum);
+  printf("sum is %llu\n", sum);
 }
 
