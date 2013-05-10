@@ -21,13 +21,13 @@ int main()
     for (b=a+1; b<=1000-a; ++b)
     {
       c = 1000 - a - b;
-      if ( (a*a + b*b == c*c) && a<b )
+      if ( a<b && (a*a + b*b == c*c) )
       {
         printf("a * b * c = %d * %d * %d = %d\n", a, b, c, a*b*c);
         break;
       }
     }
-    if (b > 1001-a)
+    if (b < 1001-a) // if we found the answer and left inner loop early, b won't have finished incrementing
       break;
   }
   return 1;
