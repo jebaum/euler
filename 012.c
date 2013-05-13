@@ -17,32 +17,70 @@
  */
 
 #include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+
+unsigned long long* sievePrimes(unsigned long long* n)
+{
+  if (*n < 2) return NULL;
+
+  char primes[(*n+1)/2];
+  int i,j;
+
+  for (i=1; i<(*n+1)/2; ++i) // initialize sieve
+    primes[i] = 'p';
+
+  for (i=1; i <= (sqrt(*n)+1)/2; ++i) // mark nonprimes with 'x'
+    if (primes[i] == 'p')
+      for (j=2*i*(i+1); j<(*n+1)/2; j+=(2*i+1))
+        primes[j] = 'x';
+
+  unsigned long long* p = malloc (sizeof(unsigned long long) * ((*n+1)/2));
+  j=0;
+  p[j++] = 2;
+
+  for (i=1; i<(*n+1)/2; ++i)
+    if (primes[i] == 'p')
+      p[j++] = 2*i+1;
+
+  *n = j;
+  return realloc(p, j*(sizeof(unsigned long long)));
+}
 
 int main()
 {
-  unsigned int i=6,j,divisors;
-  unsigned long long triangle=21;
+  int tNum = 1, nNum = 1, divisors = 0, tNum2, exponent, i;
+  unsigned long long* p = malloc(sizeof(unsigned long long));
+  *p = 65500;
+  unsigned long long* primes = sievePrimes(p);
 
-  while (++i)
+  while (divisors <= 500)
   {
-    divisors=1;
-    triangle+=i;
-    for (j=1; j<=triangle/2; ++j)
+    nNum++; // next natural number
+    tNum2 = tNum+=nNum; // next triangle number
+    divisors = 1; // so we can *=
+
+    for (i=0; i<*p; ++i)
     {
-      if (triangle % j == 0)
-      {  ++divisors;
-        //printf("%llu/%u ", triangle, j);
+      if (primes[i]*primes[i] > tNum2) // current prime greater than sqrt(tNum), so it's last divisor and has multiple 1
+      {
+        divisors*=2; // whatever it is, it'll multiply everything by (1+1)==2. don't need to actually find it
+        break;
       }
-    }
-    if (triangle == 28)
-      printf("%llu has %d ", triangle, divisors);
-    if (divisors > 500)
-    {
-      printf("answer is %llu\n", triangle);
-      break;
+
+      exponent = 1; // formula is (a_1+1)*(a_2+1)...(a_n+1), so start with the +1
+      while (tNum2 % primes[i] == 0)
+      {
+        ++exponent;
+        tNum2 /= primes[i];
+      }
+      if (exponent>1)
+        divisors *= exponent; // multiply next term in formula
+
+      if (tNum2 == 1) // check if we've fully factored our number
+        break;
     }
   }
-
+  printf("answer is %d\n", tNum);
 }
-
 
