@@ -8,15 +8,7 @@
 
 #include <stdio.h>
 #include <omp.h> // compile with '-fopenmp'
-
-unsigned int sumDivisors(unsigned int n)
-{
-    unsigned int sum = 0, i;
-    for (i=1; i<=n/2; ++i)
-      if(n % i == 0)
-        sum += i;
-    return sum;
-}
+#include "helpers.h"
 
 int main()
 {
@@ -24,7 +16,7 @@ int main()
 
     #pragma omp parallel for reduction(+:sum) private(j)
     for(i=0; i < 10000; i++)
-      if ( (j=sumDivisors(i)) > i && sumDivisors(j) == i)
+      if ( (j=sumOfDivisors(i)) > i && sumOfDivisors(j) == i)
         sum += i + j;
 
     printf("result: %d\n", sum);
