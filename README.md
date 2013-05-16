@@ -9,4 +9,3 @@ my solutions to project euler problems
 
 **7.c** - used sieve of eratosthenes after looking it up. much more refined prime generation than what I use in 3.c
 
-**8.c, 11.c, 13.c** - use scanf to read in data instead of whatever stupid thing I did before
