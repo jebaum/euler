@@ -33,6 +33,7 @@ int main()
       ++i;
     }
   }
+  fclose(fin);
 
   for (x=0; x<GRID_X; ++x)
   {
