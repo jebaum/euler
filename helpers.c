@@ -29,3 +29,22 @@ uint64_t* sievePrimes(uint64_t* n)
   return realloc(p, j*(sizeof(uint64_t)));
 }
 
+uint64_t sumOfDivisors(uint64_t n)
+{
+  unsigned int k,p;
+  uint64_t prod = 1;
+
+  for (k=2; k*k <= n; ++k)
+  {
+    p = 1;
+    while (n%k == 0)
+    {
+      p = p*k + 1;
+      n /= k;
+    }
+    prod *= p;
+  }
+  if (n>1)
+    prod *= 1+n;
+  return prod;
+}
