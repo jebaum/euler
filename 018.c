@@ -28,6 +28,7 @@ int main()
   FILE* fin = fopen("files/018.txt", "r"); // read in data
   for (i=0; i<(SIZE * (SIZE+1)) / 2; ++i)
     fscanf(fin,"%d", &raw[i]);
+  fclose(fin);
 
   for (i=0; i<SIZE; ++i) // put data into triangle array
     for (j=0; j<=i; ++j)
