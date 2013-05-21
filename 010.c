@@ -4,27 +4,21 @@
  */
 
 #include <stdio.h>
-#include <math.h>
+#include <inttypes.h>
+#include <stdlib.h>
+#include "helpers.h"
+
 #define UPPER_LIMIT 2000000
 
-// using index math described in 010_overview.pdf to optimize sieve
 int main()
 {
-  char primes[(UPPER_LIMIT+1)/2];
-  int i,j;
-  unsigned long long sum = 2;
+  uint64_t i, sum=0;
+  uint64_t bound = UPPER_LIMIT;
+  uint64_t* primes = sievePrimes(&bound);
 
-  for (i=1; i<(UPPER_LIMIT+1)/2; ++i) // initialize sieve
-    primes[i] = 'p';
-
-  for (i=1; i <= (sqrt(UPPER_LIMIT)+1)/2; ++i) // mark nonprimes with 'x'
-    if (primes[i] == 'p')
-      for (j=2*i*(i+1); j<(UPPER_LIMIT+1)/2; j+=(2*i+1))
-        primes[j] = 'x';
-
-  for (i=1; i<(UPPER_LIMIT+1)/2; ++i) // sum them up
-    if (primes[i] == 'p')
-      sum+= 2*i+1;
+  #pragma omp parallel for reduction (+:sum) private(i)
+  for (i=0; i< bound; ++i) // sum them up
+    sum+=primes[i];
 
   printf("sum is %llu\n", sum);
 }

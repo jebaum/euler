@@ -6,13 +6,16 @@ uint64_t* sievePrimes(uint64_t* n)
 {
   if (*n < 2) return NULL;
 
-  char primes[(*n+1)/2];
+  char* primes = malloc (sizeof(char) * (*n+1)/2);
+  const uint64_t loop_limit = (sqrt(*n) + 1) /2;
   uint64_t i,j;
 
+  #pragma omp parallel for private(i)
   for (i=1; i<(*n+1)/2; ++i) // initialize sieve
     primes[i] = 'p';
 
-  for (i=1; i <= (sqrt(*n)+1)/2; ++i) // mark nonprimes with 'x'
+  #pragma omp parallel for private(i,j) schedule(dynamic, 100)
+  for (i=1; i <= loop_limit; ++i) // mark nonprimes with 'x'
     if (primes[i] == 'p')
       for (j=2*i*(i+1); j<(*n+1)/2; j+=(2*i+1))
         primes[j] = 'x';
@@ -25,6 +28,7 @@ uint64_t* sievePrimes(uint64_t* n)
     if (primes[i] == 'p')
       p[j++] = 2*i+1;
 
+  free(primes);
   *n = j;
   return realloc(p, j*(sizeof(uint64_t)));
 }
